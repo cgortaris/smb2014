@@ -1,0 +1,13 @@
+{
+    "match-id": "CHI-AUS",
+    "trending-topics": [
+        {
+            "name": "laroja",
+            "mentions": "12132936"
+        },
+        {
+            "name": "fuerzachile",
+            "mentions": "928723"
+        }                    
+    ]
+}

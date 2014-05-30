@@ -1,0 +1,67 @@
+{
+    "match-id": "CHI-AUS",
+    "players": [
+        {
+            "team": "CHI",
+            "top3+": [
+                {
+                    "player-name": "Arturo Vidal",
+                    "sentiment": "89.45"
+                },
+                {
+                    "player-name": "Alexis Sanchez",
+                    "sentiment": "78.56"
+                },
+                {
+                    "player-name": "Gary Medel",
+                    "sentiment": "76.51"
+                }
+            ],
+            "top3-": [
+                {
+                    "player-name": "Esteban Paredes",
+                    "sentiment": "23.9"
+                },
+                {
+                    "player-name": "Francisco Fuenzalida",
+                    "sentiment": "21.78"
+                },
+                {
+                    "player-name": "Jose Rojas",
+                    "sentiment": "19.52"
+                }
+            ]
+        },
+        {
+            "team": "CHI",
+            "top3+": [
+                {
+                    "player-name": "Tim Cahill",
+                    "sentiment": "91.75"
+                },
+                {
+                    "player-name": "Lucas Neill",
+                    "sentiment": "78.67"
+                },
+                {
+                    "player-name": "Brett Holman",
+                    "sentiment": "71.16"
+                }
+            ],
+            "top3-": [
+                {
+                    "player-name": "Mark Birighitti",
+                    "sentiment": "31.23"
+                },
+                {
+                    "player-name": "Mat Ryan",
+                    "sentiment": "27.22"
+                },
+                {
+                    "player-name": "Josh Brillante",
+                    "sentiment": "23.12"
+                }
+            ]
+        }
+    ]
+}

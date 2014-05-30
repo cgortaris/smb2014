@@ -1,0 +1,13 @@
+{
+    "match-id": "CHI-AUS",
+    "teams": [
+        {
+            "id": "CHI",
+            "sentiment": "57.78"
+        },
+        {
+            "id": "AUS",
+            "sentiment": "67.23"
+        }
+    ]
+}
