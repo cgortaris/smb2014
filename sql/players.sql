@@ -15,7 +15,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: players; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+-- Name: players; Type: TABLE; Schema: public; Owner: smb2014; Tablespace: 
 --
 
 CREATE TABLE players (
@@ -27,10 +27,10 @@ CREATE TABLE players (
 );
 
 
-ALTER TABLE public.players OWNER TO postgres;
+ALTER TABLE public.players OWNER TO smb2014;
 
 --
--- Name: players_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+-- Name: players_id_seq; Type: SEQUENCE; Schema: public; Owner: smb2014
 --
 
 CREATE SEQUENCE players_id_seq
@@ -41,24 +41,24 @@ CREATE SEQUENCE players_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.players_id_seq OWNER TO postgres;
+ALTER TABLE public.players_id_seq OWNER TO smb2014;
 
 --
--- Name: players_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+-- Name: players_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smb2014;
 --
 
 ALTER SEQUENCE players_id_seq OWNED BY players.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+-- Name: id; Type: DEFAULT; Schema: public; Owner: smb2014
 --
 
 ALTER TABLE ONLY players ALTER COLUMN id SET DEFAULT nextval('players_id_seq'::regclass);
 
 
 --
--- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: postgres
+-- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: smb2014
 --
 
 COPY players (id, team_id, name, field_position_id, club) FROM stdin;
@@ -834,7 +834,7 @@ COPY players (id, team_id, name, field_position_id, club) FROM stdin;
 
 
 --
--- Name: players_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+-- Name: players_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smb2014
 --
 
 SELECT pg_catalog.setval('players_id_seq', 768, true);
@@ -849,7 +849,7 @@ ALTER TABLE ONLY players
 
 
 --
--- Name: players_field_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: players_field_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: smb2014
 --
 
 ALTER TABLE ONLY players
@@ -857,7 +857,7 @@ ALTER TABLE ONLY players
 
 
 --
--- Name: players_team_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: players_team_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: smb2014
 --
 
 ALTER TABLE ONLY players
@@ -865,23 +865,22 @@ ALTER TABLE ONLY players
 
 
 --
--- Name: players; Type: ACL; Schema: public; Owner: postgres
+-- Name: players; Type: ACL; Schema: public; Owner: smb2014
 --
 
 REVOKE ALL ON TABLE players FROM PUBLIC;
-REVOKE ALL ON TABLE players FROM postgres;
-GRANT ALL ON TABLE players TO postgres;
-GRANT ALL ON TABLE players TO scraper;
+REVOKE ALL ON TABLE players FROM smb2014;
+GRANT ALL ON TABLE players TO smb2014;
 
 
 --
--- Name: players_id_seq; Type: ACL; Schema: public; Owner: postgres
+-- Name: players_id_seq; Type: ACL; Schema: public; Owner: smb2014
 --
 
 REVOKE ALL ON SEQUENCE players_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE players_id_seq FROM postgres;
-GRANT ALL ON SEQUENCE players_id_seq TO postgres;
-GRANT SELECT,USAGE ON SEQUENCE players_id_seq TO scraper;
+REVOKE ALL ON SEQUENCE players_id_seq FROM smb2014;
+GRANT ALL ON SEQUENCE players_id_seq TO smb2014;
+GRANT SELECT,USAGE ON SEQUENCE players_id_seq TO smb2014;
 
 
 --
