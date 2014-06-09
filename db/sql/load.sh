@@ -10,3 +10,4 @@ psql -h fanaticodb.cjpoamapy2q6.us-west-1.rds.amazonaws.com -U apiuser fanaticoA
 psql -h fanaticodb.cjpoamapy2q6.us-west-1.rds.amazonaws.com -U apiuser fanaticoApi < facts.sql
 
 # Load stats tables
+psql -h fanaticodb.cjpoamapy2q6.us-west-1.rds.amazonaws.com -U apiuser fanaticoApi < stats.sql
