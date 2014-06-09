@@ -1,3 +1,9 @@
 db/dbconfig.php
 consumer/config/config.php
-
+api.aux
+api.bbl
+api.blg
+api.log
+api.out
+api.synctex.gz
+api.txt

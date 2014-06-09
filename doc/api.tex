@@ -1,0 +1,233 @@
+\documentclass[11pt,spanish]{article}
+\usepackage[spanish]{babel}
+\selectlanguage{spanish}
+\usepackage[utf8]{inputenc}
+
+% Use wide margins, but not quite so wide as fullpage.sty
+\marginparwidth 0.5in 
+\oddsidemargin 0.25in 
+\evensidemargin 0.25in 
+\marginparsep 0.25in
+\topmargin 0.25in 
+\textwidth 6in \textheight 8 in
+
+\usepackage{listings}
+\usepackage{color}
+\usepackage{url}
+%\usepackage{listingsutf8}
+
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\lstdefinestyle{codestyle} {
+    basicstyle=\footnotesize\ttfamily,
+    breaklines=true,
+    captionpos=b,
+    commentstyle=\color{mygreen},
+    emptylines=1,
+    frame=lines, % could be 'single'
+%    inputencoding=utf8/latin1,
+    keepspaces=true,
+    numbers=left,
+    numbersep=4pt,
+    numberstyle=\tiny\color{mygray},
+    stepnumber=1,
+    showspaces=false,
+    showstringspaces=false
+%    title=\lstname
+}
+\lstdefinestyle{Python}{
+    language=Python,
+    style=codestyle,
+    tabsize=4
+}
+\lstdefinestyle{Bash}{
+    language=bash,
+    style=codestyle
+}
+\lstdefinestyle{sql}{
+    language=SQL,
+    style=codestyle
+}
+\newcommand{\includecode}[3][Python]{\lstinputlisting[style=#1,caption=#2]{#3}}
+\newcommand{\includesnippet}[5][Python]{\lstinputlisting[style=#1,caption=#2,firstnumber=#3,linerange=#4]{#5}}
+\newcommand{\formatcode}[3][Python]{\lstlisting[style=#1,caption=#2]{#3}}
+\renewcommand{\lstlistingname}{Código fuente}
+\renewcommand{\lstlistlistingname}{Listados de código fuente.}% List of Listings -> List of Algorithm
+
+\begin{document}
+\author{Carlos Gortaris}
+\title{Documentación API Social Mundial Brasil 2014}
+
+\maketitle
+
+\begin{abstract}
+El siguiente documento describe las componentes de software y funcionamiento de la API Social Mundial Brasil 2014 (API SMB2014), cuya finalidad es proveer de indicadores actualizados sobre el pulso de las redes sociales respecto de los partidos del próximo Mundial de Fútbol: favorabilidad de equipos y jugadores, como también \emph{trending topics}; información que será consumida por una aplicación móvil. 
+\end{abstract}
+
+\section{Motivación.}
+Se lanzará al mercado de \emph{smartphones} una aplicación que entrega tendencias respecto de los partidos de fútbol del próximo mundial. Está destinada a la distribución de contenidos en la previa, entretiempo y post partidos, de tal manera que los usuarios puedan tener una vista actualizada de qué se habla en las redes sociales respecto de ontologías y términos como los \textbf{jugadores}, \textbf{equipos}, y \textbf{\emph{trending topics}} relevantes al objetivo de conocer el pulso y tendencias del mundial en redes sociales como Facebook o Twitter, por nombrar algunas.
+
+Al respecto, se hace necesaria la implementación de una API que permita exponer la información de redes sociales de tal manera que pueda ser consumida por la aplicación móvil en tiempo real.
+
+\section{Descripción de la API.}
+La API recabará información en tiempo real y luego del procesamiento que sea necesario, disponibilizará dichos resultados para ser consumidos por la aplicación móvil en formato JSON. Se espera que, dado que la información fluye en tiempo real, la responsividad se mantenga bajo una alta demanda de usuarios en la aplicación móvil. Se estima un uso concurrente de al menos 300.000 usuarios.
+
+\paragraph{Arquitectura.}
+Para su funcionamiento, dado que la implementación está hecha en PHP, necesita de un servidor web Apache 2.2.22 o superior. La base de datos que utilizará será PostgreSQL 9.1 o superior.
+
+\paragraph{Código fuente.}
+El código fuente de la API se encuentra alojado en el repositorio público de Github \url{https://github.com/cgortaris/smb2014}.
+
+\paragraph{Descripción del servicio web.}
+La API presenta las siguientes características generales:
+\begin{itemize}
+    \item La URL única de acceso es \url{http://54.183.84.215/smb2014/}.
+    \item Responde  a peticiones de tipo \texttt{GET}.
+    \item Se esperan dos parámetros:
+    \begin{itemize}
+        \item \emph{Match ID}, cuya llave es \texttt{mid}.
+        \item Tipo, cuya llave es \texttt{type} y sus valores posibles son \texttt{players}, \texttt{teams} o \texttt{tt}, para entregar la información de jugadores, equipos o \emph{trending topics}, respectivamente.
+    \end{itemize}
+    \item Los \emph{match ID} corresponden a los códigos de los partidos estipulados en el documento ~\cite{fifa}, que se componen de los ID de tres letras de cada equipo, separados por un guión (\texttt{-}).
+    \item Todos los \emph{responses} tendrán las siguientes características:
+    \begin{itemize}
+        \item Formato: JSON.
+        \item \texttt{Content-Type}: \texttt{application/json}
+    \end{itemize}
+\end{itemize}
+
+La información que la API SMB2014 disponibilizará será la siguiente, dado un partido particular:
+\begin{itemize}
+\item \textbf{Jugadores:} 
+    \begin{itemize}
+    \item Los tres jugadores con mayor favorabilidad.
+    \item Los tres jugadores con menor favorabilidad.   
+    \end{itemize}
+\item \textbf{Equipos}: El porcentaje de favorabilidad de cada equipo versus rechazo.
+\item \textbf{\emph{Trending topics}}: Los \emph{trending topics} del partido.
+\end{itemize}
+
+\paragraph{Nota:} Se considerará como una vía alternativa la obtención de los tres jugadores de los que más se habla y los tres jugadores de los que menos se habla en vez de la información de favorabilidad en caso de que ésta tenga una complejidad elevada.
+
+
+\section{\emph{Endpoint}.}
+A continuación se describen y ejemplifican las peticiones (\emph{requests}) y respuestas (\emph{responses}) que tendrán lugar según los parámetros enviados a la API.
+
+\subsection{Jugadores.}
+Se entrega los nombres y favorabilidad de los tres jugadores con mayor favorabilidad y los tres jugadores con menor favorabilidad.
+\begin{itemize}
+\item \emph{Request}: \texttt{GET} \url{http://54.183.84.215/smb2014/?mid=<matchID>&type=players}
+\item Ejemplo: \url{http://54.183.84.215/smb2014/?mid=CHI-AUS&type=players}
+\end{itemize}
+
+Ejemplo de \emph{response}:
+\lstset{style=Bash,caption=Ejemplo de \emph{request} y \emph{response} para obtención de favorabilidad de jugadores.}
+\begin{lstlisting}
+{
+    "match-id": "CHI-AUS",
+    "players": [
+        {
+            "team": "CHI",
+            "top3+": [
+                {
+                    "player-name": "Arturo Vidal",
+                    "sentiment": "89.45"
+                },
+                {
+                    "player-name": "Alexis Sanchez",
+                    "sentiment": "78.56"
+                },
+                {
+                    "player-name": "Gary Medel",
+                    "sentiment": "76.51"
+                }
+            ],
+            "top3-": [
+                {
+                    "player-name": "Esteban Paredes",
+                    "sentiment": "23.9"
+                },
+                {
+                    "player-name": "Francisco Fuenzalida",
+                    "sentiment": "21.78"
+                },
+                {
+                    "player-name": "Jose Rojas",
+                    "sentiment": "19.52"
+                }
+            ]
+        },
+        {
+            // Mismo formato que el otro equipo
+        }
+    ]
+}
+\end{lstlisting}
+
+\subsection{Equipos.}
+Se entregan los ID de los equipos y su favorabilidad.
+\begin{itemize}
+    \item \emph{Request}: \texttt{GET} \url{http://54.183.84.215/smb2014/?mid=<matchID>&type=teams}
+    \item Ejemplo: \url{http://54.183.84.215/smb2014/?mid=CHI-AUS&type=teams}
+\end{itemize}
+
+Ejemplo de \emph{response}:
+\lstset{style=Bash,caption=Ejemplo de \emph{request} y \emph{response} para obtención de favorabilidad de equipos.}
+\begin{lstlisting}
+{
+    "match-id": "CHI-AUS",
+    "teams": [
+        {
+            "id": "CHI",
+            "sentiment": "57.78"
+        },
+        {
+            "id": "AUS",
+            "sentiment": "67.23"
+        }
+    ]
+}
+\end{lstlisting}
+
+\subsection{\emph{Trending topics}.}
+Se entregan los términos y el número de menciones de cada uno.
+\begin{itemize}
+    \item \emph{Request}: \texttt{GET} \url{http://54.183.84.215/smb2014/?mid=<matchID>&type=tt}
+    \item Ejemplo: \url{http://54.183.84.215/smb2014/?mid=CHI-AUS&type=tt}
+\end{itemize}
+
+Ejemplo de \emph{response}:
+\lstset{style=Bash,caption=Ejemplo de \emph{request} y \emph{response} para obtención de \emph{trending topics}.}
+\begin{lstlisting}
+{
+    "match-id": "CHI-AUS",
+    "trending-topics": [
+        {
+            "name": "laroja",
+            "mentions": "12132936"
+        },
+        ...
+        {
+            "name": "fuerzachile",
+            "mentions": "928723"
+        }                    
+    ]
+}
+\end{lstlisting}
+
+\paragraph{Nota:}
+Los formatos JSON de \emph{responses} son susceptibles de mejora y tienen flexibilidad respecto de lo que necesita la aplicacióm móvil, por lo cual sólo debe tomarse como una referencia respecto del formato final que tendrá, el cual quedará resuelto finalizando la etapa de Testing
+
+\section{Información del autor.}
+\begin{itemize}
+\item Carlos Gortaris Núñez, Ingeniero Civil en Computación, Universidad de Chile.
+\item Email: \texttt{hola@carlosgortaris.cl}
+\item Teléfono móvil: +56 9 9939 2569
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{api}
+
+\end{document}
+
+
