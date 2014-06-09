@@ -7,16 +7,9 @@ SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
 SET search_path = public, pg_catalog;
-
 SET default_tablespace = '';
-
 SET default_with_oids = false;
-
---
--- Name: players; Type: TABLE; Schema: public; Owner: smb2014; Tablespace: 
---
 
 CREATE TABLE players (
     id integer NOT NULL,
@@ -27,12 +20,7 @@ CREATE TABLE players (
 );
 
 
-ALTER TABLE public.players OWNER TO smb2014;
-
---
--- Name: players_id_seq; Type: SEQUENCE; Schema: public; Owner: smb2014
---
-
+ALTER TABLE public.players OWNER TO apiuser;
 CREATE SEQUENCE players_id_seq
     START WITH 1
     INCREMENT BY 1
@@ -40,26 +28,9 @@ CREATE SEQUENCE players_id_seq
     NO MAXVALUE
     CACHE 1;
 
-
-ALTER TABLE public.players_id_seq OWNER TO smb2014;
-
---
--- Name: players_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: smb2014;
---
-
+ALTER TABLE public.players_id_seq OWNER TO apiuser;
 ALTER SEQUENCE players_id_seq OWNED BY players.id;
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: smb2014
---
-
 ALTER TABLE ONLY players ALTER COLUMN id SET DEFAULT nextval('players_id_seq'::regclass);
-
-
---
--- Data for Name: players; Type: TABLE DATA; Schema: public; Owner: smb2014
---
 
 COPY players (id, team_id, name, field_position_id, club) FROM stdin;
 1	7	Claudio BRAVO	1	Real Sociedad (ESP)
@@ -832,56 +803,24 @@ COPY players (id, team_id, name, field_position_id, club) FROM stdin;
 768	8	Ange POSTECOGLOU	5	(AUS)
 \.
 
-
---
--- Name: players_id_seq; Type: SEQUENCE SET; Schema: public; Owner: smb2014
---
-
 SELECT pg_catalog.setval('players_id_seq', 768, true);
-
-
---
--- Name: players_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
---
-
 ALTER TABLE ONLY players
     ADD CONSTRAINT players_pkey PRIMARY KEY (id);
-
-
---
--- Name: players_field_position_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: smb2014
---
-
 ALTER TABLE ONLY players
     ADD CONSTRAINT players_field_position_id_fkey FOREIGN KEY (field_position_id) REFERENCES field_position(id);
-
-
---
--- Name: players_team_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: smb2014
---
-
 ALTER TABLE ONLY players
     ADD CONSTRAINT players_team_id_fkey FOREIGN KEY (team_id) REFERENCES team(id);
 
-
---
--- Name: players; Type: ACL; Schema: public; Owner: smb2014
---
-
 REVOKE ALL ON TABLE players FROM PUBLIC;
-REVOKE ALL ON TABLE players FROM smb2014;
-GRANT ALL ON TABLE players TO smb2014;
-
-
---
--- Name: players_id_seq; Type: ACL; Schema: public; Owner: smb2014
---
+REVOKE ALL ON TABLE players FROM apiuser;
+GRANT ALL ON TABLE players TO apiuser;
 
 REVOKE ALL ON SEQUENCE players_id_seq FROM PUBLIC;
-REVOKE ALL ON SEQUENCE players_id_seq FROM smb2014;
-GRANT ALL ON SEQUENCE players_id_seq TO smb2014;
-GRANT SELECT,USAGE ON SEQUENCE players_id_seq TO smb2014;
+REVOKE ALL ON SEQUENCE players_id_seq FROM apiuser;
+GRANT ALL ON SEQUENCE players_id_seq TO apiuser;
+GRANT SELECT,USAGE ON SEQUENCE players_id_seq TO apiuser;
 
+CREATE INDEX ixd_player_name ON players (lower(name) varchar_pattern_ops);
 
 --
 -- PostgreSQL database dump complete

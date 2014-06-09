@@ -63,6 +63,41 @@ insert into team(name, code, team_group_id) values ('Belgium', 'BEL', 8);
 insert into team(name, code, team_group_id) values ('Algeria', 'ALG', 8);
 insert into team(name, code, team_group_id) values ('Russia', 'RUS', 8);
 insert into team(name, code, team_group_id) values ('Korea Republic', 'KOR', 8);
+alter table team add column name_es varchar(100) not null default '';
+update team set name_es = 'Brasil' where id = 1;
+update team set name_es = 'Croacia' where id = 2;
+update team set name_es = 'Mexico' where id = 3;
+update team set name_es = 'Camerun' where id = 4;
+update team set name_es = 'Espana' where id = 5;
+update team set name_es = 'Holanda' where id = 6;
+update team set name_es = 'Chile' where id = 7;
+update team set name_es = 'Australia' where id = 8;
+update team set name_es = 'Colombia' where id = 9;
+update team set name_es = 'Grecia' where id = 10;
+update team set name_es = 'Costa De Marfil' where id = 11;
+update team set name_es = 'Japon' where id = 12;
+update team set name_es = 'Uruguay' where id = 13;
+update team set name_es = 'Costa Rica' where id = 14;
+update team set name_es = 'Inglaterra' where id = 15;
+update team set name_es = 'Italia' where id = 16;
+update team set name_es = 'Suiza' where id = 17;
+update team set name_es = 'Ecuador' where id = 18;
+update team set name_es = 'Francia' where id = 19;
+update team set name_es = 'Honduras' where id = 20;
+update team set name_es = 'Argentina' where id = 21;
+update team set name_es = 'Bosnia-Herzegovina' where id = 22;
+update team set name_es = 'Iran' where id = 23;
+update team set name_es = 'Nigeria' where id = 24;
+update team set name_es = 'Alemania' where id = 25;
+update team set name_es = 'Portugal' where id = 26;
+update team set name_es = 'Ghana' where id = 27;
+update team set name_es = 'Estados Unidos' where id = 28;
+update team set name_es = 'Belgica' where id = 29;
+update team set name_es = 'Algeria' where id = 30;
+update team set name_es = 'Rusia' where id = 31;
+update team set name_es = 'Republica de Korea' where id = 32;
+CREATE INDEX ix_team_name ON team(lower(name) varchar_pattern_ops);
+CREATE INDEX ix_team_es_name ON team(lower(name_es) varchar_pattern_ops);
 
 -- Cities
 drop table if exists city cascade;
@@ -519,3 +554,15 @@ create table source (
 insert into source(name) values('twitter');
 insert into source(name) values('facebook');
 
+-- Stats
+create table stats_players (
+    player_id int references players,
+    team_id int references team,
+    type varchar(10) not null,
+    sentiment double precision
+);
+
+create table stats_teams (
+    team_id int references team,
+    sentiment double precision
+);
